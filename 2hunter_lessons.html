@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Two Hunters — 10 Life Lessons</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:'Baloo 2', sans-serif;
+    background:
+        radial-gradient(circle at top left, #243b55, transparent 35%),
+        radial-gradient(circle at bottom right, #3a2a16, transparent 35%),
+        linear-gradient(135deg,#07111f,#101b2d 55%,#0a101b);
+    color:#fff;
+    min-height:100vh;
+    padding:30px 15px;
+}
+
+.container{
+    width:100%;
+    max-width:1000px;
+    margin:auto;
+}
+
+.hero{
+    text-align:center;
+    padding:25px 15px 20px;
+}
+
+.badge{
+    display:inline-block;
+    padding:7px 16px;
+    border:1px solid rgba(255,215,130,.35);
+    border-radius:50px;
+    color:#f5cf78;
+    font-size:14px;
+    letter-spacing:1px;
+    margin-bottom:15px;
+    background:rgba(255,255,255,.04);
+}
+
+h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(38px,7vw,70px);
+    line-height:1.05;
+    color:#f7d681;
+    margin-bottom:12px;
+}
+
+.subtitle{
+    max-width:700px;
+    margin:auto;
+    color:#cbd5e1;
+    font-size:19px;
+    line-height:1.5;
+}
+
+.story-box{
+    margin:25px auto;
+    max-width:850px;
+    padding:25px;
+    border-radius:22px;
+    background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
+    border:1px solid rgba(255,255,255,.1);
+    text-align:center;
+}
+
+.story-box h2{
+    color:#f5cf78;
+    margin-bottom:10px;
+}
+
+.story-box p{
+    color:#d7dee9;
+    font-size:17px;
+    line-height:1.6;
+}
+
+.progress-wrapper{
+    margin:25px auto;
+    max-width:850px;
+}
+
+.progress-bar{
+    width:100%;
+    height:9px;
+    background:rgba(255,255,255,.08);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#e8b84b,#ffe39a);
+    border-radius:20px;
+    transition:.5s ease;
+}
+
+.progress-text{
+    text-align:center;
+    margin-top:8px;
+    color:#aeb9c8;
+    font-size:14px;
+}
+
+.card{
+    max-width:850px;
+    margin:20px auto;
+    background:
+        linear-gradient(145deg,
+        rgba(255,255,255,.09),
+        rgba(255,255,255,.025));
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:28px;
+    padding:35px;
+    box-shadow:0 20px 70px rgba(0,0,0,.3);
+}
+
+.step{
+    display:none;
+    animation:fadeIn .5s ease;
+}
+
+.step.active{
+    display:block;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.lesson-number{
+    color:#f5cf78;
+    font-size:14px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:8px;
+}
+
+.question{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(26px,4vw,38px);
+    line-height:1.25;
+    margin-bottom:10px;
+}
+
+.lesson-title{
+    color:#f5cf78;
+    font-size:24px;
+    margin-bottom:20px;
+}
+
+.choices{
+    display:grid;
+    gap:12px;
+    margin-top:25px;
+}
+
+.choice{
+    width:100%;
+    text-align:left;
+    padding:17px 20px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.045);
+    color:#eef2f7;
+    font-family:inherit;
+    font-size:17px;
+    cursor:pointer;
+    transition:.25s ease;
+}
+
+.choice:hover{
+    transform:translateY(-2px);
+    border-color:#e8c96d;
+    background:rgba(255,210,100,.08);
+}
+
+.choice.selected{
+    border-color:#f5cf78;
+    background:rgba(245,207,120,.13);
+}
+
+.feedback{
+    display:none;
+    margin-top:22px;
+    padding:20px;
+    border-radius:17px;
+    background:rgba(40,167,69,.09);
+    border-left:4px solid #f5cf78;
+    color:#e7edf5;
+    line-height:1.6;
+    font-size:16px;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback strong{
+    color:#f5cf78;
+}
+
+.navigation{
+    display:none;
+    justify-content:center;
+    margin-top:28px;
+}
+
+.next-btn,
+.restart-btn{
+    border:none;
+    border-radius:50px;
+    padding:14px 30px;
+    background:linear-gradient(135deg,#dcae43,#f6d77d);
+    color:#17120a;
+    font-family:inherit;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s ease;
+}
+
+.next-btn:hover,
+.restart-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(245,207,120,.2);
+}
+
+.lesson-summary{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin-top:25px;
+}
+
+.lesson-card{
+    padding:20px;
+    border-radius:18px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.09);
+}
+
+.lesson-card .icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.lesson-card h3{
+    color:#f5cf78;
+    margin-bottom:5px;
+    font-size:20px;
+}
+
+.lesson-card p{
+    color:#cbd5e1;
+    line-height:1.5;
+}
+
+.promise{
+    margin-top:28px;
+    padding:28px;
+    border-radius:22px;
+    text-align:center;
+    background:
+        linear-gradient(135deg,
+        rgba(245,207,120,.13),
+        rgba(255,255,255,.035));
+    border:1px solid rgba(245,207,120,.25);
+}
+
+.promise h2{
+    font-family:'Playfair Display',serif;
+    color:#f5cf78;
+    margin-bottom:15px;
+    font-size:30px;
+}
+
+.promise p{
+    font-size:20px;
+    line-height:1.6;
+    color:#f1f5f9;
+}
+
+.real-life{
+    margin-top:25px;
+    padding:22px;
+    border-radius:18px;
+    background:rgba(255,255,255,.04);
+}
+
+.real-life h3{
+    color:#f5cf78;
+    margin-bottom:8px;
+}
+
+.real-life p{
+    color:#cbd5e1;
+    line-height:1.6;
+}
+
+.footer{
+    text-align:center;
+    margin:30px auto 10px;
+    color:#738096;
+    font-size:14px;
+}
+
+@media(max-width:650px){
+
+    body{
+        padding:15px 10px;
+    }
+
+    .card{
+        padding:24px 18px;
+        border-radius:22px;
+    }
+
+    .lesson-summary{
+        grid-template-columns:1fr;
+    }
+
+    .question{
+        font-size:27px;
+    }
+
+    .subtitle{
+        font-size:17px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+
+        <div class="badge">
+            🌿 STORY → CHOICE → LIFE LESSON
+        </div>
+
+        <h1>The Two Hunters</h1>
+
+        <p class="subtitle">
+            A simple forest story with 10 powerful lessons.
+            Can you carry these lessons with you after the story ends?
+        </p>
+
+    </div>
+
+
+    <!-- STORY -->
+    <div class="story-box">
+
+        <h2>🏹 Remember the Story</h2>
+
+        <p>
+            Two hunters went deep into the forest.
+            One hunter shot a rabbit and proudly returned with his catch.
+            The other hunter threw his spear at an elephant,
+            but the elephant escaped.
+            He returned home empty-handed — yet he was happy.
+        </p>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+    <div class="progress-wrapper">
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="progress-text" id="progressText">
+            Lesson 1 of 10
+        </div>
+
+    </div>
+
+
+    <!-- MAIN CARD -->
+    <div class="card">
+
+
+        <!-- LESSON 1 -->
+        <div class="step active" data-step="0">
+
+            <div class="lesson-number">Lesson 1 of 10</div>
+
+            <div class="question">
+                What makes a person truly successful?
+            </div>
+
+            <div class="lesson-title">
+                🎯 Success Is More Than the Result
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Getting the biggest result
+                </button>
+
+                <button class="choice">
+                    Receiving praise from everyone
+                </button>
+
+                <button class="choice">
+                    Sincere effort, courage and learning
+                </button>
+
+                <button class="choice">
+                    Having more than others
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                A result is only one part of success.
+                The effort, courage, learning and character developed
+                along the way are also valuable.
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 2 -->
+        <div class="step" data-step="1">
+
+            <div class="lesson-number">Lesson 2 of 10</div>
+
+            <div class="question">
+                The second hunter came home empty-handed.
+                Was his day completely wasted?
+            </div>
+
+            <div class="lesson-title">
+                💪 Effort Matters
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Yes, because he brought nothing home
+                </button>
+
+                <button class="choice">
+                    No, because he had the courage to try
+                </button>
+
+                <button class="choice">
+                    Yes, because only results matter
+                </button>
+
+                <button class="choice">
+                    We cannot learn anything from trying
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                Honest effort is never completely wasted.
+                Even when the result is different from what we hoped,
+                our effort can give us experience and strength.
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 3 -->
+        <div class="step" data-step="2">
+
+            <div class="lesson-number">Lesson 3 of 10</div>
+
+            <div class="question">
+                The first hunter brought back a rabbit.
+                What should he have done?
+            </div>
+
+            <div class="lesson-title">
+                🙏 Don't Become Proud of Small Achievements
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Laugh at the other hunter
+                </button>
+
+                <button class="choice">
+                    Think he is better than everyone
+                </button>
+
+                <button class="choice">
+                    Be grateful and remain humble
+                </button>
+
+                <button class="choice">
+                    Boast about his achievement
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                Success should make us grateful, not arrogant.
+                A small achievement should never make us look down
+                on someone else.
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 4 -->
+        <div class="step" data-step="3">
+
+            <div class="lesson-number">Lesson 4 of 10</div>
+
+            <div class="question">
+                What should you notice when you look at your own progress?
+            </div>
+
+            <div class="lesson-title">
+                🌱 Appreciate Your Own Progress
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Only how far others have gone
+                </button>
+
+                <button class="choice">
+                    Whether I am becoming better than before
+                </button>
+
+                <button class="choice">
+                    Whether everyone is praising me
+                </button>
+
+                <button class="choice">
+                    Whether I have more things than my friends
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                Growth is personal.
+                Instead of constantly comparing yourself with others,
+                ask: “Am I becoming better than I was yesterday?”
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 5 -->
+        <div class="step" data-step="4">
+
+            <div class="lesson-number">Lesson 5 of 10</div>
+
+            <div class="question">
+                Which quality helps us face a difficult challenge?
+            </div>
+
+            <div class="lesson-title">
+                🦁 Big Goals Require Courage
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Giving up immediately
+                </button>
+
+                <button class="choice">
+                    Waiting for everything to become easy
+                </button>
+
+                <button class="choice">
+                    Courage to attempt something difficult
+                </button>
+
+                <button class="choice">
+                    Avoiding every challenge
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                Big goals often require us to step outside our comfort zone.
+                Courage means trying even when success is not guaranteed.
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 6 -->
+        <div class="step" data-step="5">
+
+            <div class="lesson-number">Lesson 6 of 10</div>
+
+            <div class="question">
+                Your friend succeeds at something before you.
+                What is the healthy response?
+            </div>
+
+            <div class="lesson-title">
+                🤝 Don't Compare Yourself With Others
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Feel jealous
+                </button>
+
+                <button class="choice">
+                    Feel happy for them and continue improving
+                </button>
+
+                <button class="choice">
+                    Try to prove that I am better
+                </button>
+
+                <button class="choice">
+                    Stop trying
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                Someone else's success does not make your progress smaller.
+                Celebrate their achievement and keep walking on your own path.
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 7 -->
+        <div class="step" data-step="6">
+
+            <div class="lesson-number">Lesson 7 of 10</div>
+
+            <div class="question">
+                What can happen when something doesn't work out?
+            </div>
+
+            <div class="lesson-title">
+                🌿 Failure Can Still Be Valuable
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Nothing useful
+                </button>
+
+                <button class="choice">
+                    We can learn what to improve next time
+                </button>
+
+                <button class="choice">
+                    It proves that we can never succeed
+                </button>
+
+                <button class="choice">
+                    We should always quit
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                A disappointing result can become a teacher.
+                Ask yourself: “What can I learn from this?”
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 8 -->
+        <div class="step" data-step="7">
+
+            <div class="lesson-number">Lesson 8 of 10</div>
+
+            <div class="question">
+                Should happiness depend completely on what we achieve?
+            </div>
+
+            <div class="lesson-title">
+                😊 Happiness Is More Than Possessions
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Yes, only winning makes us happy
+                </button>
+
+                <button class="choice">
+                    Yes, having more things always means more happiness
+                </button>
+
+                <button class="choice">
+                    No, inner qualities and gratitude also matter
+                </button>
+
+                <button class="choice">
+                    Happiness is impossible without success
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                Results and possessions can change.
+                Gratitude, meaningful relationships, learning and good character
+                can bring a deeper kind of happiness.
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 9 -->
+        <div class="step" data-step="8">
+
+            <div class="lesson-number">Lesson 9 of 10</div>
+
+            <div class="question">
+                What makes achievement truly beautiful?
+            </div>
+
+            <div class="lesson-title">
+                🌟 Humility Makes Success Meaningful
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Showing everyone that I am better
+                </button>
+
+                <button class="choice">
+                    Making others feel small
+                </button>
+
+                <button class="choice">
+                    Being grateful and humble after success
+                </button>
+
+                <button class="choice">
+                    Constantly talking about my achievement
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                Achievement becomes more beautiful when it is accompanied
+                by gratitude and humility.
+            </div>
+
+        </div>
+
+
+
+        <!-- LESSON 10 -->
+        <div class="step" data-step="9">
+
+            <div class="lesson-number">Lesson 10 of 10</div>
+
+            <div class="question">
+                What is the deepest meaning of victory?
+            </div>
+
+            <div class="lesson-title">
+                🏆 Become Better Than Yesterday
+            </div>
+
+            <div class="choices">
+
+                <button class="choice">
+                    Defeating everyone
+                </button>
+
+                <button class="choice">
+                    Getting more than everyone else
+                </button>
+
+                <button class="choice">
+                    Becoming a better version of myself
+                </button>
+
+                <button class="choice">
+                    Making everyone admire me
+                </button>
+
+            </div>
+
+            <div class="feedback">
+                <strong>Remember:</strong>
+                Real victory is not always about defeating someone else.
+                It is about growing in character, courage, wisdom and goodness.
+            </div>
+
+        </div>
+
+
+
+        <!-- FINAL -->
+        <div class="step" data-step="10">
+
+            <div class="lesson-number">🌟 Your Final Challenge</div>
+
+            <div class="question">
+                Carry the lessons beyond the story.
+            </div>
+
+            <div class="lesson-title">
+                What Will You Remember?
+            </div>
+
+
+            <div class="lesson-summary">
+
+                <div class="lesson-card">
+                    <div class="icon">🎯</div>
+                    <h3>1. Success</h3>
+                    <p>
+                        Success is more than the final result.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">💪</div>
+                    <h3>2. Effort</h3>
+                    <p>
+                        Sincere effort is valuable even when results are difficult.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">🙏</div>
+                    <h3>3. Humility</h3>
+                    <p>
+                        Never allow a small achievement to make you proud.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">🌱</div>
+                    <h3>4. Progress</h3>
+                    <p>
+                        Appreciate your own growth instead of constantly comparing.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">🦁</div>
+                    <h3>5. Courage</h3>
+                    <p>
+                        Big goals require courage to try difficult things.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">🤝</div>
+                    <h3>6. Don't Compare</h3>
+                    <p>
+                        Someone else's success does not reduce your value.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">🌿</div>
+                    <h3>7. Learn From Failure</h3>
+                    <p>
+                        Every setback can teach you something valuable.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">😊</div>
+                    <h3>8. True Happiness</h3>
+                    <p>
+                        Happiness is deeper than possessions and achievements.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">🌟</div>
+                    <h3>9. Humble Success</h3>
+                    <p>
+                        Gratitude and humility make success meaningful.
+                    </p>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="icon">🏆</div>
+                    <h3>10. Real Victory</h3>
+                    <p>
+                        Try to become better than you were yesterday.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="promise">
+
+                <h2>🌿 My Hunter's Promise</h2>
+
+                <p>
+                    “I will not measure my success only by my results.
+                    I will sincerely try, face challenges with courage,
+                    learn from my mistakes, appreciate my progress,
+                    avoid comparing myself with others,
+                    remain grateful and humble,
+                    and try to become better than I was yesterday.”
+                </p>
+
+            </div>
+
+
+            <div class="real-life">
+
+                <h3>💭 One Question to Take Home</h3>
+
+                <p>
+                    The next time something does not go the way you wanted,
+                    don't ask only:
+                    <strong>“Did I win?”</strong>
+                    <br><br>
+                    Ask:
+                    <strong>
+                        “Did I sincerely try?
+                        What did I learn?
+                        Did I become a little better?”
+                    </strong>
+                </p>
+
+            </div>
+
+            <div style="text-align:center;margin-top:30px;">
+
+                <button class="restart-btn" id="restart">
+                    🔄 Start Again
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <div class="navigation" id="navigation">
+
+            <button class="next-btn" id="next">
+                Continue →
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        🌿 Learn the lesson • Live the lesson • Become the lesson 🌿
+    </div>
+
+</div>
+
+
+<script>
+
+const steps = document.querySelectorAll(".step");
+const choices = document.querySelectorAll(".choice");
+const nextButton = document.getElementById("next");
+const navigation = document.getElementById("navigation");
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
+const restartButton = document.getElementById("restart");
+
+let currentStep = 0;
+let answered = false;
+
+const totalLessons = 10;
+
+
+/* Show current step */
+
+function showStep(index){
+
+    steps.forEach(step => {
+        step.classList.remove("active");
+    });
+
+    steps[index].classList.add("active");
+
+    currentStep = index;
+
+    updateProgress();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+
+    if(index < totalLessons){
+
+        navigation.style.display = "none";
+        answered = false;
+
+    }else{
+
+        navigation.style.display = "none";
+
+    }
+
+}
+
+
+/* Update progress bar */
+
+function updateProgress(){
+
+    let percent;
+
+    if(currentStep < totalLessons){
+
+        percent = ((currentStep + 1) / totalLessons) * 100;
+
+        progressText.textContent =
+            "Lesson " + (currentStep + 1) + " of " + totalLessons;
+
+    }else{
+
+        percent = 100;
+
+        progressText.textContent =
+            "🎉 All 10 lessons completed!";
+
+    }
+
+    progressFill.style.width = percent + "%";
+
+}
+
+
+/* Choice interaction */
+
+steps.forEach((step, stepIndex) => {
+
+    const buttons = step.querySelectorAll(".choice");
+    const feedback = step.querySelector(".feedback");
+
+    buttons.forEach(button => {
+
+        button.addEventListener("click", function(){
+
+            if(answered) return;
+
+            answered = true;
+
+            buttons.forEach(btn => {
+                btn.classList.remove("selected");
+            });
+
+            this.classList.add("selected");
+
+            if(feedback){
+                feedback.classList.add("show");
+            }
+
+            navigation.style.display = "flex";
+
+            if(stepIndex === totalLessons - 1){
+
+                nextButton.textContent = "See My 10 Lessons →";
+
+            }else{
+
+                nextButton.textContent = "Continue →";
+
+            }
+
+        });
+
+    });
+
+});
+
+
+/* Next button */
+
+nextButton.addEventListener("click", function(){
+
+    if(currentStep < totalLessons){
+
+        showStep(currentStep + 1);
+
+    }
+
+});
+
+
+/* Restart */
+
+restartButton.addEventListener("click", function(){
+
+    currentStep = 0;
+
+    steps.forEach(step => {
+
+        step.classList.remove("active");
+
+        const buttons = step.querySelectorAll(".choice");
+
+        buttons.forEach(button => {
+            button.classList.remove("selected");
+        });
+
+        const feedback = step.querySelector(".feedback");
+
+        if(feedback){
+            feedback.classList.remove("show");
+        }
+
+    });
+
+    steps[0].classList.add("active");
+
+    answered = false;
+
+    updateProgress();
+
+    navigation.style.display = "none";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+});
+
+
+/* Initial setup */
+
+updateProgress();
+
+</script>
+
+</body>
+</html>

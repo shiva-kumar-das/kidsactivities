@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Two Hunters — Story Quiz</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+
+:root {
+    --bg1: #0f172a;
+    --bg2: #172554;
+    --card: rgba(255,255,255,0.96);
+    --gold: #f59e0b;
+    --gold2: #fbbf24;
+    --green: #16a34a;
+    --red: #dc2626;
+    --text: #172033;
+    --muted: #64748b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Baloo 2", sans-serif;
+    background:
+        radial-gradient(circle at 20% 10%, rgba(245,158,11,.18), transparent 25%),
+        radial-gradient(circle at 80% 90%, rgba(59,130,246,.18), transparent 30%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.app {
+    width: 100%;
+    max-width: 900px;
+}
+
+/* HEADER */
+
+.hero {
+    text-align: center;
+    color: white;
+    margin-bottom: 22px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 7px 18px;
+    border-radius: 999px;
+    background: rgba(245,158,11,.18);
+    border: 1px solid rgba(251,191,36,.35);
+    color: #fbbf24;
+    font-weight: 700;
+    letter-spacing: .5px;
+    margin-bottom: 10px;
+}
+
+.hero h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(32px, 6vw, 55px);
+    margin: 0;
+    line-height: 1.1;
+}
+
+.hero p {
+    margin: 8px 0 0;
+    color: #cbd5e1;
+    font-size: 18px;
+}
+
+/* CARD */
+
+.quiz-card {
+    background: var(--card);
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.35),
+        0 5px 20px rgba(0,0,0,.12);
+}
+
+/* TOP BAR */
+
+.topbar {
+    padding: 20px 26px 12px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 9px;
+}
+
+.progress-track {
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 99px;
+    transition: width .4s ease;
+}
+
+/* QUESTION */
+
+.question-area {
+    padding: 30px 34px 20px;
+}
+
+.question-number {
+    color: var(--gold);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 14px;
+}
+
+.question {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(25px, 4vw, 36px);
+    line-height: 1.25;
+    margin: 8px 0 25px;
+}
+
+/* OPTIONS */
+
+.options {
+    display: grid;
+    gap: 13px;
+}
+
+.option {
+    width: 100%;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 17px;
+    padding: 15px 17px;
+    font-family: inherit;
+    font-size: 18px;
+    text-align: left;
+    cursor: pointer;
+    transition: all .2s ease;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.option:hover {
+    transform: translateY(-2px);
+    border-color: #f59e0b;
+    box-shadow: 0 8px 20px rgba(15,23,42,.08);
+}
+
+.option-letter {
+    min-width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    font-weight: 800;
+    color: #475569;
+}
+
+.option.correct {
+    border-color: var(--green);
+    background: #f0fdf4;
+}
+
+.option.correct .option-letter {
+    background: var(--green);
+    color: white;
+}
+
+.option.wrong {
+    border-color: var(--red);
+    background: #fef2f2;
+}
+
+.option.wrong .option-letter {
+    background: var(--red);
+    color: white;
+}
+
+.option.disabled {
+    cursor: default;
+}
+
+/* FEEDBACK */
+
+.feedback {
+    margin-top: 20px;
+    padding: 15px 18px;
+    border-radius: 15px;
+    display: none;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.feedback.show {
+    display: block;
+}
+
+.feedback.correct {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.feedback.wrong {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* FOOTER */
+
+.footer {
+    padding: 20px 34px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.tip {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.next-btn,
+.restart-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 13px 23px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.next-btn {
+    background: #172033;
+    color: white;
+    display: none;
+}
+
+.next-btn:hover,
+.restart-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* RESULT */
+
+.result {
+    display: none;
+    text-align: center;
+    padding: 50px 30px 55px;
+}
+
+.result-icon {
+    font-size: 72px;
+    margin-bottom: 10px;
+}
+
+.result h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 42px;
+    margin: 0 0 10px;
+}
+
+.score {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--gold);
+    margin: 15px 0;
+}
+
+.result-message {
+    max-width: 600px;
+    margin: 0 auto 25px;
+    color: var(--muted);
+    font-size: 18px;
+}
+
+.lesson {
+    margin: 25px auto;
+    max-width: 650px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    padding: 20px;
+    border-radius: 18px;
+    text-align: left;
+}
+
+.lesson strong {
+    color: #92400e;
+}
+
+.restart-btn {
+    background: var(--gold);
+    color: #422006;
+}
+
+/* CONFETTI */
+
+.confetti {
+    position: fixed;
+    width: 9px;
+    height: 14px;
+    top: -20px;
+    animation: fall 3s linear forwards;
+    z-index: 999;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* RESPONSIVE */
+
+@media(max-width:600px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .quiz-card {
+        border-radius: 22px;
+    }
+
+    .question-area {
+        padding: 25px 20px 15px;
+    }
+
+    .topbar {
+        padding: 18px 20px 10px;
+    }
+
+    .footer {
+        padding: 18px 20px 24px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .next-btn {
+        width: 100%;
+    }
+
+    .option {
+        font-size: 16px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="hero">
+        <div class="badge">🌿 STORY REVISION QUIZ</div>
+        <h1>The Two Hunters</h1>
+        <p>How carefully do you remember the story?</p>
+    </div>
+
+    <div class="quiz-card">
+
+        <div id="quizScreen">
+
+            <div class="topbar">
+                <div class="progress-info">
+                    <span id="progressText">Question 1 of 12</span>
+                    <span id="scoreText">⭐ 0</span>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress" id="progress"></div>
+                </div>
+            </div>
+
+            <div class="question-area">
+
+                <div class="question-number" id="questionNumber">
+                    Question 1
+                </div>
+
+                <div class="question" id="question">
+                    Loading...
+                </div>
+
+                <div class="options" id="options"></div>
+
+                <div class="feedback" id="feedback"></div>
+
+            </div>
+
+            <div class="footer">
+                <div class="tip">
+                    💭 Think carefully before choosing!
+                </div>
+
+                <button class="next-btn" id="nextBtn">
+                    Next Question →
+                </button>
+            </div>
+
+        </div>
+
+        <div class="result" id="resultScreen">
+
+            <div class="result-icon" id="resultIcon">🏆</div>
+
+            <h2 id="resultTitle">Amazing!</h2>
+
+            <div class="score" id="finalScore">
+                12 / 12
+            </div>
+
+            <div class="result-message" id="resultMessage"></div>
+
+            <div class="lesson">
+                <strong>🌟 Remember the deeper lesson:</strong>
+                <br><br>
+                True success is not only about what we achieve or what
+                we possess. What matters is the attitude with which we
+                make our effort — courage, humility, happiness and
+                learning from the experience.
+            </div>
+
+            <button class="restart-btn" onclick="restartQuiz()">
+                🔄 Play Again
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+    question: "Where did the two hunters go?",
+    options: [
+        "To a village",
+        "Deep into a dense forest",
+        "To a mountain",
+        "To a river"
+    ],
+    answer: 1,
+    explanation: "The two hunters went deep into a dense forest looking for animals."
+},
+
+{
+    question: "What weapon did the first hunter carry?",
+    options: [
+        "A sword",
+        "A spear",
+        "A bow and arrows",
+        "A knife"
+    ],
+    answer: 2,
+    explanation: "The first hunter carried a traditional bow and arrows."
+},
+
+{
+    question: "What weapon did the second hunter carry?",
+    options: [
+        "A spear",
+        "A bow",
+        "A sword",
+        "A net"
+    ],
+    answer: 0,
+    explanation: "The second hunter carried a strong spear."
+},
+
+{
+    question: "What animal did the first hunter see?",
+    options: [
+        "A deer",
+        "A tiger",
+        "A rabbit",
+        "An elephant"
+    ],
+    answer: 2,
+    explanation: "He spotted a rabbit hiding behind the bushes."
+},
+
+{
+    question: "What did the first hunter do after seeing the rabbit?",
+    options: [
+        "He ran away",
+        "He carefully aimed and shot an arrow",
+        "He called the second hunter",
+        "He tried to catch it with his hands"
+    ],
+    answer: 1,
+    explanation: "He took an arrow, aimed carefully and released it."
+},
+
+{
+    question: "What happened to the rabbit?",
+    options: [
+        "It escaped",
+        "It hid deeper in the forest",
+        "The arrow struck it",
+        "It attacked the hunter"
+    ],
+    answer: 2,
+    explanation: "The arrow struck the rabbit, and the hunter picked it up."
+},
+
+{
+    question: "What large animal did the second hunter discover?",
+    options: [
+        "A lion",
+        "A tiger",
+        "An elephant",
+        "A bear"
+    ],
+    answer: 2,
+    explanation: "The second hunter discovered a huge elephant."
+},
+
+{
+    question: "What happened when the second hunter threw his spear?",
+    options: [
+        "The spear missed completely",
+        "The elephant was struck and ran away",
+        "The elephant caught the spear",
+        "The hunter ran away"
+    ],
+    answer: 1,
+    explanation: "The spear struck the elephant, which then ran deeper into the forest."
+},
+
+{
+    question: "Why was the second hunter happy even though he had no animal to carry home?",
+    options: [
+        "He had found treasure",
+        "He had enjoyed attempting to hunt a much bigger animal",
+        "He wanted to go home quickly",
+        "He had found another rabbit"
+    ],
+    answer: 1,
+    explanation: "He was happy because he had courageously attempted something much more challenging."
+},
+
+{
+    question: "How did the first hunter feel while returning home?",
+    options: [
+        "Sad",
+        "Afraid",
+        "Proud of himself",
+        "Angry"
+    ],
+    answer: 2,
+    explanation: "He felt very proud because he was carrying the rabbit."
+},
+
+{
+    question: "How did the second hunter return home?",
+    options: [
+        "Sadly and silently",
+        "Angrily",
+        "Happily and smiling",
+        "Without the first hunter"
+    ],
+    answer: 2,
+    explanation: "Although he was empty-handed, he was happy and smiling."
+},
+
+{
+    question: "What did the first hunter ask the second hunter?",
+    options: [
+        "Where is your bow?",
+        "Where is your catch?",
+        "Where are you going?",
+        "Did you see a rabbit?"
+    ],
+    answer: 1,
+    explanation: "The first hunter laughed and asked, “Where is your catch?”"
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+const progressEl = document.getElementById("progress");
+const progressText = document.getElementById("progressText");
+const scoreText = document.getElementById("scoreText");
+
+function loadQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    questionEl.textContent = q.question;
+
+    document.getElementById("questionNumber").textContent =
+        `Question ${currentQuestion + 1}`;
+
+    progressText.textContent =
+        `Question ${currentQuestion + 1} of ${questions.length}`;
+
+    scoreText.textContent = `⭐ ${score}`;
+
+    progressEl.style.width =
+        `${(currentQuestion / questions.length) * 100}%`;
+
+    optionsEl.innerHTML = "";
+
+    feedbackEl.className = "feedback";
+    feedbackEl.textContent = "";
+
+    nextBtn.style.display = "none";
+
+    q.options.forEach((option, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+
+        button.innerHTML = `
+            <span class="option-letter">
+                ${String.fromCharCode(65 + index)}
+            </span>
+            <span>${option}</span>
+        `;
+
+        button.onclick = () => selectAnswer(index, button);
+
+        optionsEl.appendChild(button);
+    });
+}
+
+function selectAnswer(selected, selectedButton) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const q = questions[currentQuestion];
+    const buttons = document.querySelectorAll(".option");
+
+    buttons.forEach(btn => {
+        btn.classList.add("disabled");
+    });
+
+    if (selected === q.answer) {
+
+        score++;
+
+        selectedButton.classList.add("correct");
+
+        feedbackEl.className = "feedback show correct";
+
+        feedbackEl.innerHTML =
+            `✅ Correct! ${q.explanation}`;
+
+    } else {
+
+        selectedButton.classList.add("wrong");
+
+        buttons[q.answer].classList.add("correct");
+
+        feedbackEl.className = "feedback show wrong";
+
+        feedbackEl.innerHTML =
+            `💡 Not quite. ${q.explanation}`;
+    }
+
+    scoreText.textContent = `⭐ ${score}`;
+
+    nextBtn.style.display = "block";
+
+    if (currentQuestion === questions.length - 1) {
+        nextBtn.textContent = "See My Result 🏆";
+    }
+}
+
+nextBtn.addEventListener("click", () => {
+
+    currentQuestion++;
+
+    if (currentQuestion >= questions.length) {
+        showResult();
+    } else {
+        loadQuestion();
+    }
+});
+
+function showResult() {
+
+    document.getElementById("quizScreen").style.display = "none";
+
+    document.getElementById("resultScreen").style.display = "block";
+
+    document.getElementById("finalScore").textContent =
+        `${score} / ${questions.length}`;
+
+    let title;
+    let message;
+    let icon;
+
+    const percentage = (score / questions.length) * 100;
+
+    if (percentage === 100) {
+
+        icon = "🏆";
+        title = "Perfect Memory!";
+        message =
+            "Outstanding! You remembered every important part of the story. You are ready to explain the story to someone else!";
+
+        createConfetti();
+
+    } else if (percentage >= 75) {
+
+        icon = "🌟";
+        title = "Excellent!";
+        message =
+            "Wonderful work! You remembered most of the important events and details. Read the story once more and you may reach a perfect score.";
+
+    } else if (percentage >= 50) {
+
+        icon = "👏";
+        title = "Good Try!";
+        message =
+            "You remembered many parts of the story. Go back through the story once more and notice what happened to each hunter.";
+
+    } else {
+
+        icon = "🌱";
+        title = "Let's Try Again!";
+        message =
+            "Every attempt helps us learn. Read the story again carefully, then play the quiz once more.";
+
+    }
+
+    document.getElementById("resultIcon").textContent = icon;
+    document.getElementById("resultTitle").textContent = title;
+    document.getElementById("resultMessage").textContent = message;
+}
+
+function restartQuiz() {
+
+    currentQuestion = 0;
+    score = 0;
+
+    document.getElementById("quizScreen").style.display = "block";
+    document.getElementById("resultScreen").style.display = "none";
+
+    loadQuestion();
+}
+
+function createConfetti() {
+
+    const symbols = ["✨", "⭐", "🌟", "🎉", "💛"];
+
+    for (let i = 0; i < 70; i++) {
+
+        const piece = document.createElement("div");
+
+        piece.className = "confetti";
+
+        piece.textContent =
+            symbols[Math.floor(Math.random() * symbols.length)];
+
+        piece.style.left =
+            Math.random() * 100 + "vw";
+
+        piece.style.animationDelay =
+            Math.random() * 1.5 + "s";
+
+        piece.style.fontSize =
+            (12 + Math.random() * 15) + "px";
+
+        document.body.appendChild(piece);
+
+        setTimeout(() => {
+            piece.remove();
+        }, 4500);
+    }
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
