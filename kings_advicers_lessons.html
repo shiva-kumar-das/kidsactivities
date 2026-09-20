@@ -1,0 +1,1237 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The King's Three Advisers — Thinking Adventure</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:"Trebuchet MS",Arial,sans-serif;
+    background:#e0e5d3;
+    color:#202020;
+}
+
+.app{
+    max-width:1050px;
+    margin:auto;
+    padding:18px;
+}
+
+/* HEADER */
+
+header{
+    background:#7f9475;
+    color:white;
+    border-radius:28px;
+    padding:30px;
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+.crown{
+    font-size:52px;
+}
+
+h1{
+    margin:5px 0;
+    font-size:clamp(32px,6vw,56px);
+    letter-spacing:-2px;
+}
+
+.subtitle{
+    font-size:18px;
+    opacity:.8;
+}
+
+.progress-wrap{
+    margin-top:22px;
+    background:#444;
+    border-radius:20px;
+    padding:5px;
+}
+
+.progress{
+    height:10px;
+    width:5%;
+    background:white;
+    border-radius:20px;
+    transition:.4s;
+}
+
+/* SCREENS */
+
+.screen{
+    display:none;
+    background:white;
+    border:2px solid #222;
+    border-radius:26px;
+    margin-top:18px;
+    padding:26px;
+    box-shadow:0 8px 22px rgba(0,0,0,.07);
+}
+
+.screen.active{
+    display:block;
+    animation:appear .35s ease;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.badge{
+    display:inline-block;
+    border:2px solid #222;
+    border-radius:30px;
+    padding:6px 13px;
+    font-weight:bold;
+    font-size:13px;
+    text-transform:uppercase;
+}
+
+h2{
+    font-size:clamp(27px,5vw,40px);
+    margin:12px 0;
+}
+
+.intro{
+    font-size:19px;
+    max-width:800px;
+}
+
+/* QUOTE */
+
+.quote{
+    background:#f4f2ec;
+    border:2px solid #222;
+    border-radius:20px;
+    padding:24px;
+    margin:20px 0;
+    font-size:23px;
+    font-weight:bold;
+    text-align:center;
+}
+
+/* THINKING PATH */
+
+.path{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.path div{
+    border:2px solid #222;
+    border-radius:18px;
+    padding:15px 8px;
+    text-align:center;
+    font-weight:bold;
+    background:white;
+}
+
+/* LESSON CARDS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:14px;
+    margin-top:20px;
+}
+
+.card{
+    background:#fafafa;
+    border:2px solid #222;
+    border-radius:20px;
+    padding:18px;
+    min-height:145px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+.card.selected{
+    background:#222;
+    color:white;
+}
+
+.icon{
+    font-size:36px;
+}
+
+.lesson-number{
+    font-size:12px;
+    font-weight:bold;
+    opacity:.6;
+}
+
+.lesson-title{
+    font-weight:800;
+    font-size:18px;
+    margin-top:5px;
+}
+
+/* QUESTIONS */
+
+.question{
+    background:#f0eee7;
+    border-left:7px solid #222;
+    border-radius:18px;
+    padding:18px;
+    margin:20px 0;
+    font-size:21px;
+    font-weight:bold;
+}
+
+.scenario{
+    border:2px dashed #555;
+    border-radius:20px;
+    padding:20px;
+    font-size:19px;
+    background:#7f9475;
+}
+
+/* CHOICES */
+
+.choice-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:12px;
+}
+
+button{
+    border:2px solid #222;
+    background:white;
+    color:#222;
+    border-radius:18px;
+    padding:14px 18px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+button.primary{
+    background:#222;
+    color:white;
+}
+
+.choice{
+    min-height:90px;
+    text-align:left;
+}
+
+.choice.chosen{
+    background:#222;
+    color:white;
+}
+
+/* FEEDBACK */
+
+.feedback{
+    display:none;
+    margin-top:15px;
+    padding:15px;
+    border-radius:15px;
+    border:2px solid #222;
+    background:#eee;
+    font-weight:bold;
+}
+
+.feedback.show{
+    display:block;
+}
+
+/* TEXT INPUT */
+
+textarea{
+    width:100%;
+    min-height:110px;
+    border:2px solid #222;
+    border-radius:15px;
+    padding:15px;
+    font:inherit;
+    resize:vertical;
+}
+
+/* BUTTONS */
+
+.btns{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:24px;
+    flex-wrap:wrap;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    color:#666;
+    padding:25px;
+    font-size:14px;
+}
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+    .app{
+        padding:10px;
+    }
+
+    .screen{
+        padding:18px;
+    }
+
+    .path{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+<header>
+
+<div class="crown">♛</div>
+
+<h1>The King's Three Advisers</h1>
+
+<div class="subtitle">
+A Thinking Adventure for Young Minds
+</div>
+
+<div class="progress-wrap">
+<div class="progress" id="progress"></div>
+</div>
+
+</header>
+
+
+<!-- INTRO -->
+
+<section class="screen active">
+
+<span class="badge">Your Mission</span>
+
+<h2>Can you think like a wise adviser?</h2>
+
+<p class="intro">
+A man took bread from a bakery.
+At first, it looked like simple stealing.
+But the king discovered something important:
+the man's children had not eaten for three days.
+</p>
+
+<div class="quote">
+Before we decide what someone deserves,
+should we first understand what happened?
+</div>
+
+<div class="path">
+
+<div>👀<br>LOOK</div>
+<div>❓<br>ASK WHY</div>
+<div>❤️<br>UNDERSTAND</div>
+<div>🧠<br>THINK</div>
+<div>⚖️<br>DECIDE</div>
+
+</div>
+
+<div class="btns">
+<span></span>
+<button class="primary" onclick="next()">Begin Adventure →</button>
+</div>
+
+</section>
+
+
+<!-- 12 LESSONS -->
+
+<section class="screen">
+
+<span class="badge">The King's Lessons</span>
+
+<h2>Discover the 12 lessons</h2>
+
+<p class="intro">
+Tap the lessons that you think are important.
+Then think about which one you would use in your own life.
+</p>
+
+<div class="cards">
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">👀</div>
+<div class="lesson-number">LESSON 1</div>
+<div class="lesson-title">
+Understand before you judge
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">❓</div>
+<div class="lesson-number">LESSON 2</div>
+<div class="lesson-title">
+Ask “Why?” before “What should I do?”
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">🔄</div>
+<div class="lesson-number">LESSON 3</div>
+<div class="lesson-title">
+The same action can have different reasons
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">⚖️</div>
+<div class="lesson-number">LESSON 4</div>
+<div class="lesson-title">
+Justice needs truth and wisdom
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">📜</div>
+<div class="lesson-number">LESSON 5</div>
+<div class="lesson-title">
+Rules matter, but circumstances matter too
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">❤️</div>
+<div class="lesson-number">LESSON 6</div>
+<div class="lesson-title">
+Compassion does not mean ignoring wrongdoing
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">🔍</div>
+<div class="lesson-number">LESSON 7</div>
+<div class="lesson-title">
+Look beyond the person to the problem
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">🌱</div>
+<div class="lesson-number">LESSON 8</div>
+<div class="lesson-title">
+Search for the root cause
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">🫶</div>
+<div class="lesson-number">LESSON 9</div>
+<div class="lesson-title">
+Good decisions should protect everyone
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">⚖️❤️</div>
+<div class="lesson-number">LESSON 10</div>
+<div class="lesson-title">
+Balance justice and compassion
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">🚫🏷️</div>
+<div class="lesson-number">LESSON 11</div>
+<div class="lesson-title">
+Do not label people too quickly
+</div>
+</div>
+
+<div class="card" onclick="selectCard(this)">
+<div class="icon">💡</div>
+<div class="lesson-number">LESSON 12</div>
+<div class="lesson-title">
+A difficult situation can have more than one solution
+</div>
+</div>
+
+</div>
+
+<div class="question">
+Which lesson do you think is most important?
+</div>
+
+<textarea
+placeholder="Tell the king what you think..."
+></textarea>
+
+<div class="btns">
+<button onclick="next()">Continue →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 1 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 1</span>
+
+<h2>👀 Understand before you judge</h2>
+
+<div class="scenario">
+You see a child holding another child's toy.
+It looks like he took it.
+</div>
+
+<div class="question">
+What should you do FIRST?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,true)">
+“Let me find out what happened.”
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+“He is bad!”
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+“Take the toy away immediately.”
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 2 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 2</span>
+
+<h2>❓ Ask “Why?”</h2>
+
+<div class="question">
+A friend suddenly pushes another child.
+What wise question could you ask?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,true)">
+“Why did he do that?”
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+“How can I punish him?”
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+“Who is the winner?”
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 3 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 3</span>
+
+<h2>🔄 Actions can have different reasons</h2>
+
+<div class="scenario">
+Two children take an apple.
+
+One takes it without asking.
+
+The other takes it because the teacher asked him to bring it.
+</div>
+
+<div class="question">
+Do both actions mean exactly the same thing?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,true)">
+No. We need to know the reason.
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+Yes. Always.
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 4 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 4</span>
+
+<h2>⚖️ Justice needs truth</h2>
+
+<div class="question">
+The king has heard only one side of the story.
+Is he ready to decide?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,false)">
+Yes. Decide quickly.
+</button>
+
+<button class="choice"
+onclick="answer(this,true)">
+No. First discover the truth.
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 5 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 5</span>
+
+<h2>📜 Rules and circumstances</h2>
+
+<div class="scenario">
+A child breaks a rule because there is an emergency
+and someone needs help.
+</div>
+
+<div class="question">
+Should we ignore all rules?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,false)">
+Yes. Rules never matter.
+</button>
+
+<button class="choice"
+onclick="answer(this,true)">
+No. Understand the situation and respond wisely.
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 6 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 6</span>
+
+<h2>❤️ Compassion and responsibility</h2>
+
+<div class="question">
+The man was hungry.
+Does that automatically mean stealing was the best solution?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,false)">
+Yes. Anything is okay when hungry.
+</button>
+
+<button class="choice"
+onclick="answer(this,true)">
+No. We can understand his need
+and still think about a fair response.
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 7 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 7</span>
+
+<h2>🔍 Look beyond the person</h2>
+
+<div class="question">
+The king has found the man.
+What bigger question should he ask?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,false)">
+“How can I punish him fastest?”
+</button>
+
+<button class="choice"
+onclick="answer(this,true)">
+“Why did this family have no food?”
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+“Who saw him first?”
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 8 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 8</span>
+
+<h2>🌱 Find the root cause</h2>
+
+<div class="scenario">
+The king gives this family food today.
+But tomorrow another family becomes hungry.
+</div>
+
+<div class="question">
+What could the king think about?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,true)">
+“How can we stop families from going hungry?”
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+“How can we punish more people?”
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 9 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 9</span>
+
+<h2>🫶 Protect everyone</h2>
+
+<div class="question">
+Whose needs should the king think about?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,true)">
+The hungry family, the baker,
+and the kingdom.
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+Only the man who took the bread.
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 10 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 10</span>
+
+<h2>⚖️❤️ Justice + Compassion</h2>
+
+<div class="question">
+Can a wise decision care about someone's suffering
+AND still be fair?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,true)">
+Yes. Wisdom searches for a fair and caring response.
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+No. We must choose only one.
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 11 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 11</span>
+
+<h2>🚫🏷️ Don't label too quickly</h2>
+
+<div class="scenario">
+You see someone make a mistake.
+You do not know what happened before it.
+</div>
+
+<div class="question">
+What could you say?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,true)">
+“I don't know the whole story yet.”
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+“I know exactly what kind of person he is.”
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Next →</button>
+</div>
+
+</section>
+
+
+<!-- LESSON 12 -->
+
+<section class="screen">
+
+<span class="badge">Lesson 12</span>
+
+<h2>💡 More than one solution</h2>
+
+<div class="question">
+The king wants to help the family,
+be fair to the baker,
+and protect the kingdom.
+
+Can he think of more than one helpful action?
+</div>
+
+<div class="choice-grid">
+
+<button class="choice"
+onclick="answer(this,true)">
+Yes! He can think of several actions together.
+</button>
+
+<button class="choice"
+onclick="answer(this,false)">
+No. There can only be one answer.
+</button>
+
+</div>
+
+<div class="feedback"></div>
+
+<div class="btns">
+<button onclick="back()">← Back</button>
+<button class="primary" onclick="next()">Final Challenge →</button>
+</div>
+
+</section>
+
+
+<!-- FINAL CHALLENGE -->
+
+<section class="screen">
+
+<span class="badge">👑 Final Challenge</span>
+
+<h2>You Are the King!</h2>
+
+<p class="intro">
+The courtroom is silent.
+
+The hungry children are waiting.
+
+The baker is waiting.
+
+The people are watching.
+
+Now YOU must think.
+</p>
+
+<div class="question">
+What should the king do?
+</div>
+
+<div class="cards">
+
+<div class="card" onclick="selectCard(this)">
+🍚 Give the family food
+</div>
+
+<div class="card" onclick="selectCard(this)">
+🗣️ Talk to the man and understand what happened
+</div>
+
+<div class="card" onclick="selectCard(this)">
+🍞 Think about the baker too
+</div>
+
+<div class="card" onclick="selectCard(this)">
+⚖️ Decide a fair response
+</div>
+
+<div class="card" onclick="selectCard(this)">
+🌱 Solve the deeper problem
+</div>
+
+<div class="card" onclick="selectCard(this)">
+💡 Something else
+</div>
+
+</div>
+
+<div class="question">
+Why did you choose these?
+</div>
+
+<textarea
+id="finalAnswer"
+placeholder="Tell the king your plan..."
+></textarea>
+
+<div class="btns">
+
+<button onclick="back()">
+← Think Again
+</button>
+
+<button class="primary" onclick="finish()">
+Give Your Advice 👑
+</button>
+
+</div>
+
+</section>
+
+
+<!-- END -->
+
+<section class="screen">
+
+<span class="badge">The King's Wisdom</span>
+
+<h2>🌟 You became a thinking adviser!</h2>
+
+<div class="quote">
+STOP → LOOK → ASK WHY → UNDERSTAND → THINK → DECIDE
+</div>
+
+<p class="intro">
+A wise person does not rush to judge.
+A wise person looks deeper, listens,
+understands, cares about everyone,
+and searches for a fair solution.
+</p>
+
+<div class="question">
+One last question:
+</div>
+
+<p style="font-size:20px;font-weight:bold">
+What will you remember the next time
+you see someone doing something wrong?
+</p>
+
+<textarea
+placeholder="I will remember..."
+></textarea>
+
+<div class="btns">
+
+<button class="primary" onclick="restart()">
+↻ Play Again
+</button>
+
+</div>
+
+</section>
+
+
+<div class="footer">
+The King's Three Advisers • Thinking Adventure
+</div>
+
+</div>
+
+
+<script>
+
+let current=0;
+
+const screens=
+document.querySelectorAll(".screen");
+
+function show(index){
+
+screens[current].classList.remove("active");
+
+current=index;
+
+if(current<0)
+current=0;
+
+if(current>=screens.length)
+current=screens.length-1;
+
+screens[current].classList.add("active");
+
+let percent=
+(current/(screens.length-1))*100;
+
+document.getElementById("progress")
+.style.width=percent+"%";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function next(){
+
+show(current+1);
+
+}
+
+function back(){
+
+show(current-1);
+
+}
+
+function restart(){
+
+current=0;
+
+screens.forEach(
+s=>s.classList.remove("active")
+);
+
+screens[0].classList.add("active");
+
+document.getElementById("progress")
+.style.width="5%";
+
+}
+
+function selectCard(card){
+
+card.classList.toggle("selected");
+
+}
+
+function answer(button,correct){
+
+let parent=button.parentElement;
+
+let buttons=
+parent.querySelectorAll(".choice");
+
+buttons.forEach(
+b=>b.classList.remove("chosen")
+);
+
+button.classList.add("chosen");
+
+let feedback=
+button.parentElement
+.nextElementSibling;
+
+feedback.classList.add("show");
+
+if(correct){
+
+feedback.innerHTML=
+"✨ Wise thinking! You looked deeper instead of rushing to judge.";
+
+}else{
+
+feedback.innerHTML=
+"💭 Think again. Remember what the advisers taught us: understand before deciding.";
+
+}
+
+}
+
+function finish(){
+
+let answer=
+document.getElementById("finalAnswer").value.trim();
+
+if(answer===""){
+
+alert(
+"Tell the king at least one idea first. There can be more than one good answer!"
+);
+
+return;
+
+}
+
+next();
+
+}
+
+</script>
+
+</body>
+</html>
+
