@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The King's Three Advisers — Premium Story Revision</title>
+<style>
+:root{--navy:#17233d;--deep:#202d4b;--gold:#e8b84b;--cream:#fffaf0;--ivory:#fffdf8;--purple:#7656a8;--teal:#3d8f8a;--ink:#26324a;--muted:#718096;--line:#eadfc8}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:linear-gradient(135deg,#eee8dc,#f8f4eb);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+#royal-revision{max-width:736px;margin:0 auto}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#17233d 0%,#293a61 58%,#60477d 100%);border-radius:24px;padding:25px 23px;color:white;margin-bottom:16px;border:1px solid #344466;box-shadow:0 10px 28px rgba(23,35,61,.18)}
+.hero:after{content:'✦  ✧  ✦';position:absolute;right:18px;top:14px;color:#f8d982;font-size:19px;letter-spacing:7px;opacity:.7}
+.crown{font-size:35px;color:#f8d982}
+h1{font-size:27px;line-height:1.12;margin:8px 0 7px}
+.subtitle{font-size:14px;color:#e9e4d8;line-height:1.5}
+.progress-wrap{margin-top:18px}.progress-label{display:flex;justify-content:space-between;font-size:11px;color:#d9dff0;margin-bottom:6px}
+.progress{height:8px;background:rgba(255,255,255,.16);border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#e8b84b,#f8d982);border-radius:20px;transition:width .35s}
+.panel,.result{background:var(--ivory);border:1px solid var(--line);border-radius:21px;padding:22px;box-shadow:0 8px 25px rgba(65,48,20,.07)}
+.badge{display:inline-flex;background:#f6e9c6;color:#77571b;font-size:11px;font-weight:850;padding:7px 11px;border-radius:999px;letter-spacing:.3px;margin-bottom:11px}
+h2{font-size:21px;line-height:1.25;margin:0 0 8px;color:var(--deep)}
+p{line-height:1.58;margin:7px 0}.question{font-size:15px;color:#59667c}
+.items{display:grid;gap:10px;margin-top:17px}
+button{font:inherit}.item{min-height:50px;border:1px solid #e6ddca;border-radius:14px;background:white;padding:12px 14px;cursor:pointer;text-align:left;color:var(--ink);transition:.15s}
+.item:hover{transform:translateY(-1px);border-color:#d7b75f;box-shadow:0 4px 12px rgba(88,67,28,.07)}
+.item.selected{background:#fff5d9;border-color:#e0b84d}.item.correct{background:#edf8ef!important;border-color:#69a276!important;color:#285b35}.item.wrong{background:#fff0ef!important;border-color:#d78279!important}
+.feedback{display:none;margin-top:14px;padding:13px 14px;border-radius:13px;background:#f7f2e7;border-left:4px solid var(--gold);font-size:14px;line-height:1.55}
+.next{display:none;width:100%;margin-top:13px;min-height:48px;border:0;border-radius:14px;background:linear-gradient(135deg,#202d4b,#394c73);color:white;font-weight:800;cursor:pointer}
+.next.show{display:block}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}.match .item{text-align:center;font-weight:650}.match .left{border-left:4px solid var(--purple)}.match .right{border-left:4px solid var(--teal)}
+.sequence{display:grid;gap:9px;margin-top:17px}.seq-item{display:flex!important;align-items:center;gap:11px}.num{width:29px;height:29px;border-radius:50%;background:#eee7d7;display:grid;place-items:center;font-weight:850;font-size:13px;flex:none}.seq-item.picked{background:#fff5d9;border-color:#dfb44b}.seq-item.picked .num{background:#e8b84b;color:#17233d}
+.truefalse{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:16px}.tf{min-height:60px;border:1px solid #e6ddca;border-radius:14px;background:white;font-weight:850;cursor:pointer;color:var(--deep)}
+.tf.selected{background:#edf8ef;border-color:#69a276}
+.result{text-align:center;background:linear-gradient(145deg,#fffaf0,#f3e9d2)}.result-crown{font-size:42px;color:#c99527}.score{font-size:43px;font-weight:900;color:#76571b;margin:5px}.result-title{font-size:21px;font-weight:850;color:var(--deep)}
+.quote{background:white;border:1px solid #eadfc8;border-radius:14px;padding:14px;text-align:left;margin:16px 0;font-style:italic;line-height:1.55;color:#4e596d}
+.restart{min-height:47px;padding:10px 19px;border:0;border-radius:14px;background:linear-gradient(135deg,#7656a8,#594184);color:white;font-weight:800;cursor:pointer}
+@media(max-width:480px){body{padding:12px}.hero,.panel,.result{padding:18px}.hero h1,h1{font-size:24px}.match,.truefalse{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="royal-revision">
+<section class="hero">
+<div class="crown">♛</div>
+<h1>The King’s Three Advisers</h1>
+<div class="subtitle">A Royal Story Revision Adventure</div>
+<div class="progress-wrap">
+<div class="progress-label"><span id="roundLabel">Challenge 1 of 7</span><span>Story Mastery</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+</div>
+</section>
+<div id="game"></div>
+</div>
+
+<script>
+(()=> {
+const root=document.getElementById('royal-revision');
+const game=root.querySelector('#game'),bar=root.querySelector('#bar'),round=root.querySelector('#roundLabel');
+let n=0,score=0,locked=false;
+
+const data=[
+{type:'tap',tag:'CHALLENGE 1 · REMEMBER',title:'Who said what?',text:'Tap the statement that belongs to the First Adviser.',items:['“Theft is theft. He must be punished.”','“Give the man food first. Then punish him for stealing.”','“First ask — why is he stealing?”'],ans:0,why:'The First Adviser said: “Theft is theft. He must be punished.”'},
+{type:'match',tag:'CHALLENGE 2 · MATCH',title:'Match each adviser with the response',text:'Tap one adviser, then tap the response that belongs with it.',left:['First Adviser','Second Adviser','Third Adviser'],right:['Ask why he is stealing.','Give food first, then punish him.','Theft is theft; he must be punished.'],pairs:[2,1,0]},
+{type:'sequence',tag:'CHALLENGE 3 · ORDER',title:'Build the story in the correct order',text:'Tap the events in the order they happened.',items:['The king summons three advisers.','The king asks what they would do.','The three advisers give their responses.','The man is brought before the king.','The truth about his children is revealed.'],ans:[0,1,2,3,4]},
+{type:'tf',tag:'CHALLENGE 4 · TRUE OR FALSE',title:'Story Detective',text:'Was each statement true or false according to the story?',items:[['The second adviser suggested giving the man food first.','T'],['The third adviser immediately demanded punishment.','F'],['The man stole the bread for himself.','F'],['His children had not eaten for three days.','T']]},
+{type:'odd',tag:'CHALLENGE 5 · ODD ONE OUT',title:'Which one does NOT belong?',text:'Three statements come directly from the story. One does not. Tap the one that does NOT belong.',items:['The first adviser said the man must be punished.','The second adviser suggested food first, then punishment.','The third adviser asked why he was stealing.','The king immediately forgave the man and sent him home.'],ans:3,why:'The story does not say that the king immediately forgave the man and sent him home.'},
+{type:'missing',tag:'CHALLENGE 6 · COMPLETE THE STORY',title:'What comes next?',text:'Complete the final part of the story by choosing the missing statement.',items:['The courtroom fell silent.','The man became the king’s adviser.','The bakery was closed.','The advisers left the kingdom.'],ans:0,why:'After the truth was revealed, the story says: “The courtroom fell silent.”'},
+{type:'concept',tag:'CHALLENGE 7 · KEY IDEA',title:'Find the key idea',text:'Which statement expresses the Third Adviser’s key idea?',items:['The reason behind an action may change how we should respond.','Every action deserves the same punishment.','Stealing is never connected with a person’s circumstances.','The king should always follow the first answer.'],ans:0,why:'This is the reason the Third Adviser gave for asking why the man was stealing.'}
+];
+
+function base(q,body){
+return '<section class="panel"><span class="badge">✦ '+q.tag+'</span><h2>'+q.title+'</h2><p class="question">'+q.text+'</p>'+body+'<div id="feedback" class="feedback"></div><button type="button" id="next" class="next">Continue to the Next Challenge →</button></section>';
+}
+
+function render(){
+locked=false;
+bar.style.width=(n/data.length*100)+'%';
+round.textContent='Challenge '+Math.min(n+1,data.length)+' of '+data.length;
+if(n>=data.length)return finish();
+const q=data[n];
+
+if(['tap','odd','concept','missing'].includes(q.type)){
+game.innerHTML=base(q,'<div class="items">'+q.items.map((x,i)=>'<button type="button" class="item" data-i="'+i+'">'+x+'</button>').join('')+'</div>');
+root.querySelectorAll('.item').forEach(b=>b.addEventListener('click',()=>single(+b.dataset.i,b,q)));
+}
+
+else if(q.type==='match'){
+game.innerHTML=base(q,'<div id="matchArea" class="match">'+
+q.left.map((x,i)=>'<button type="button" class="item left" data-i="'+i+'">'+x+'</button>').join('')+
+q.right.map((x,i)=>'<button type="button" class="item right" data-i="'+i+'">'+x+'</button>').join('')+'</div>');
+let chosen=null;
+root.querySelectorAll('.left').forEach(b=>b.addEventListener('click',()=>{
+chosen=+b.dataset.i;
+root.querySelectorAll('.left').forEach(x=>x.classList.remove('selected'));
+b.classList.add('selected');
+}));
+root.querySelectorAll('.right').forEach(b=>b.addEventListener('click',()=>{
+if(chosen===null)return;
+const r=+b.dataset.i,ok=q.pairs[chosen]===r;
+b.classList.add(ok?'correct':'wrong');
+if(ok){
+score++;
+root.querySelector('.left[data-i="'+chosen+'"]').classList.add('correct');
+chosen=null;
+checkMatch(q);
+}else setTimeout(()=>b.classList.remove('wrong'),550);
+}));
+}
+
+else if(q.type==='sequence'){
+game.innerHTML=base(q,'<div class="sequence">'+q.items.map((x,i)=>
+'<button type="button" class="item seq-item" data-i="'+i+'"><span class="num">•</span><span>'+x+'</span></button>').join('')+'</div>');
+let order=[];
+root.querySelectorAll('.seq-item').forEach(b=>b.addEventListener('click',()=>{
+if(b.classList.contains('picked'))return;
+order.push(+b.dataset.i);
+b.classList.add('picked');
+b.querySelector('.num').textContent=order.length;
+if(order.length===q.items.length){
+const ok=order.every((v,i)=>v===q.ans[i]);
+if(ok)score++;
+finishQuestion(ok,ok?'Perfect! You reconstructed the story in the correct order.':'Not quite. Revisit the sequence of events in the story.');
+}
+}));
+}
+
+else if(q.type==='tf'){
+let i=0;
+const show=()=>{
+if(i>=q.items.length){
+score++;
+finishQuestion(true,'Excellent! You remembered all four details.');
+return;
+}
+game.innerHTML=base(q,'<p><strong>'+q.items[i][0]+'</strong></p><div class="truefalse"><button type="button" class="tf" data-v="T">TRUE</button><button type="button" class="tf" data-v="F">FALSE</button></div>');
+root.querySelectorAll('.tf').forEach(b=>b.addEventListener('click',()=>{
+const ok=b.dataset.v===q.items[i][1];
+if(ok){b.classList.add('selected');i++;setTimeout(show,350)}
+else{b.style.borderColor='#c86672';setTimeout(()=>b.style.borderColor='',550)}
+}));
+};
+show();
+}
+}
+
+function single(i,b,q){
+if(locked)return;
+locked=true;
+const ok=i===q.ans;
+if(ok)score++;
+b.classList.add(ok?'correct':'wrong');
+root.querySelectorAll('.item').forEach((x,j)=>{
+x.disabled=true;
+if(j===q.ans)x.classList.add('correct');
+});
+finishQuestion(ok,ok?'Correct! '+q.why:'Not quite. '+q.why);
+}
+
+function checkMatch(q){
+if(root.querySelectorAll('.left.correct').length===q.left.length)
+finishQuestion(true,'Beautiful! All three advisers are matched correctly.');
+}
+
+function finishQuestion(ok,msg){
+const f=root.querySelector('#feedback');
+f.style.display='block';
+f.innerHTML=(ok?'✓ <strong>Well done.</strong> ':'<strong>Keep remembering.</strong> ')+msg;
+root.querySelector('#next').classList.add('show');
+root.querySelector('#next').onclick=()=>{n++;render()};
+}
+
+function finish(){
+bar.style.width='100%';
+round.textContent='Complete';
+game.innerHTML='<section class="result"><div class="result-crown">♛</div><div class="result-title">Royal Story Revision Complete</div><div class="score">'+score+' / 7</div><p>You have revisited the important details of <strong>The King’s Three Advisers</strong>.</p><div class="quote">“Because the reason behind an action may change how we should respond.”</div><p><strong>Final question from the story:</strong><br>What will the king do to uphold justice, restore peace, and bring prosperity to his kingdom?</p><button type="button" class="restart" id="restart">↻ Revise the Story Again</button></section>';
+root.querySelector('#restart').onclick=()=>{n=0;score=0;render()};
+}
+
+render();
+})();
+</script>
+</body>
+</html>
